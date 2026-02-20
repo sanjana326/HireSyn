@@ -1,0 +1,63 @@
+{
+  "info": {
+    "name": "C2C Auth",
+    "_postman_id": "c2c-auth-collection",
+    "description": "Authentication & Access Control endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login (Admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "http://localhost:5000/api/auth/login" },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@c2c.com\",\n  \"password\": \"Admin@123\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "http://localhost:5000/api/auth/logout" }
+      }
+    },
+    {
+      "name": "Create User (Admin only)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": { "raw": "http://localhost:5000/api/auth/create-user" },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Vendor 1\",\n  \"email\": \"vendor@test.com\",\n  \"password\": \"Vendor@123\",\n  \"role\": \"vendor\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Me (Admin)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "http://localhost:5000/api/auth/me" }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "token", "value": "" }
+  ]
+}
