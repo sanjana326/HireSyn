@@ -48,13 +48,7 @@ module.exports = {
     if (tableInfo.id) {
       await queryInterface.renameColumn("users", "id", "users_id");
     }
-    if (tableInfo.role) {
-      await queryInterface.changeColumn("users", "role", {
-        type: DataTypes.ENUM("admin"),
-        allowNull: false,
-        defaultValue: "admin",
-      });
-    } else {
+    if (!tableInfo.role) {
       await queryInterface.addColumn("users", "role", {
         type: DataTypes.ENUM("admin"),
         allowNull: false,
