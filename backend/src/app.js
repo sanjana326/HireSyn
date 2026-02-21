@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const authRoutes = require("./routes/auth.routes");
+const vendorRoutes = require("./routes/vendor.routes");
 
 const app = express();
 
@@ -20,6 +21,15 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/vendors", vendorRoutes);
+
+app.get("/api/vendors/ping-direct", (_req, res) => {
+  res.status(200).json({ success: true, message: "ok-direct" });
+});
+
+app.get("/debug", (_req, res) => {
+  res.json({ hasVendorRoutes: typeof vendorRoutes });
+});
 
 app.use((err, _req, res, _next) => {
   res.status(500).json({ success: false, message: "Server error" });
