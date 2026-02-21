@@ -40,12 +40,18 @@ const User = sequelize.define(
       type: DataTypes.DATE,
       allowNull: true,
     },
+    deleted: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     tableName: "users",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
+    paranoid: true,
+    deletedAt: "deleted",
     indexes: [
       {
         unique: true,
