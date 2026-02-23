@@ -5,6 +5,7 @@ const authRoutes = require("./routes/auth.routes");
 const vendorRoutes = require("./routes/vendor.routes");
 const clientRoutes = require("./routes/client.routes");
 const clientContactsRoutes = require("./routes/client.contacts.routes");
+const jobRoutes = require("./routes/job.routes");
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/vendors", vendorRoutes);
 app.use("/api/clients", clientRoutes);
 app.use("/api/clients/:clientId/contacts", clientContactsRoutes);
+app.use("/api/jobs", jobRoutes);
 
 app.get("/api/vendors/ping-direct", (_req, res) => {
   res.status(200).json({ success: true, message: "ok-direct" });
