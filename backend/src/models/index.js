@@ -4,6 +4,7 @@ const Vendor = require("./vendor.model");
 const Client = require("./client.model");
 const ClientContact = require("./clientContact.model");
 const Job = require("./job.model");
+const Resource = require("./resource.model");
 
 Vendor.belongsTo(User, { foreignKey: "handled_by" });
 User.hasMany(Vendor, { foreignKey: "handled_by" });
@@ -13,6 +14,8 @@ ClientContact.belongsTo(Client, { foreignKey: "client_id" });
 Client.hasMany(ClientContact, { foreignKey: "client_id" });
 Job.belongsTo(Client, { foreignKey: "client_id" });
 Client.hasMany(Job, { foreignKey: "client_id" });
+Resource.belongsTo(Vendor, { foreignKey: "vendor_id" });
+Vendor.hasMany(Resource, { foreignKey: "vendor_id" });
 
 module.exports = {
   sequelize,
@@ -21,4 +24,5 @@ module.exports = {
   Client,
   ClientContact,
   Job,
+  Resource,
 };

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-     "start": "node src/server.js",
+    "start": "node src/server.js",
     "dev": "nodemon src/server.js"
   },
   "keywords": [],
@@ -19,6 +19,7 @@
     "express": "^5.2.1",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.3",
+    "multer": "^2.0.2",
     "mysql2": "^3.17.3",
     "sequelize": "^6.37.7"
   },
@@ -33,6 +34,4 @@
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
-
-
 }
