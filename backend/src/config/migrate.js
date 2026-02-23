@@ -11,18 +11,20 @@ async function runMigrations() {
     .filter((f) => f.endsWith(".js"))
     .sort();
 
-  for (const file of files) {
-    const full = path.join(migrationsDir, file);
-    console.log(`Running migration: ${file}`);
-    const migration = require(full);
-    if (typeof migration.up === "function") {
-      try {
-        await migration.up({ queryInterface });
-        console.log(`Migration completed: ${file}`);
-      } catch (e) {
-        console.error(`Migration failed: ${file}`);
-        if (e && e.message) console.error(e.message);
-        throw e;
+  for (let pass = 1; pass <= 2; pass++) {
+    for (const file of files) {
+      const full = path.join(migrationsDir, file);
+      console.log(`Running migration: ${file}`);
+      const migration = require(full);
+      if (typeof migration.up === "function") {
+        try {
+          await migration.up({ queryInterface });
+          console.log(`Migration completed: ${file}`);
+        } catch (e) {
+          console.error(`Migration failed: ${file}`);
+          if (e && e.message) console.error(e.message);
+          throw e;
+        }
       }
     }
   }

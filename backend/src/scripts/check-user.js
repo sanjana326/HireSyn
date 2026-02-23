@@ -3,6 +3,19 @@ require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 const { sequelize, User } = require("../models");
 
 async function main() {
+  const qi = sequelize.getQueryInterface();
+  const info = await qi.describeTable("users").catch(() => null);
+  if (info) {
+    console.log("USERS_COLUMNS:", Object.keys(info));
+  } else {
+    console.log("USERS_COLUMNS: <unavailable>");
+  }
+  const cinfo = await qi.describeTable("clients").catch(() => null);
+  if (cinfo) {
+    console.log("CLIENTS_COLUMNS:", Object.keys(cinfo));
+  } else {
+    console.log("CLIENTS_COLUMNS: <unavailable>");
+  }
   const targetEmail = (process.argv[2] || "admin@c2c.com").trim().toLowerCase();
   const user = await User.findOne({ where: { email: targetEmail } });
   if (!user) {

@@ -3,6 +3,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const authRoutes = require("./routes/auth.routes");
 const vendorRoutes = require("./routes/vendor.routes");
+const clientRoutes = require("./routes/client.routes");
+const clientContactsRoutes = require("./routes/client.contacts.routes");
 
 const app = express();
 
@@ -22,13 +24,15 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/vendors", vendorRoutes);
+app.use("/api/clients", clientRoutes);
+app.use("/api/clients/:clientId/contacts", clientContactsRoutes);
 
 app.get("/api/vendors/ping-direct", (_req, res) => {
   res.status(200).json({ success: true, message: "ok-direct" });
 });
 
 app.get("/debug", (_req, res) => {
-  res.json({ hasVendorRoutes: typeof vendorRoutes });
+  res.json({ hasVendorRoutes: typeof vendorRoutes, hasClientRoutes: typeof clientRoutes });
 });
 
 app.use((err, _req, res, _next) => {
