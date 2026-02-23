@@ -173,4 +173,52 @@ async function getJobsList(req, res) {
   }
 }
 
-module.exports = { createJob, updateJob, deleteJob, getJobById, getJobsList };
+async function getJobsByClient(req, res) {
+  try {
+    const clientId = Number(req.params?.clientId ?? 0);
+    const page = Number(req.query?.page ?? 1);
+    const limit = Number(req.query?.limit ?? 10);
+    const search = typeof req.query?.search === "string" ? req.query.search.trim() : "";
+    if (!Number.isInteger(clientId) || clientId <= 0) {
+      return res.status(400).json({ success: false, message: "Invalid client_id", data: {} });
+    }
+    const currentPage = Number.isInteger(page) && page > 0 ? page : 1;
+    const pageLimit = Number.isInteger(limit) && limit > 0 ? limit : 10;
+    const offset = (currentPage - 1) * pageLimit;
+    const where = { is_deleted: false, client_id: clientId };
+    const ops = [];
+    if (search) {
+      ops.push({ job_title: { [Op.like]: `%${search}%` } });
+      ops.push({ skills: { [Op.like]: `%${search}%` } });
+      ops.push({ description: { [Op.like]: `%${search}%` } });
+      ops.push({ location: { [Op.like]: `%${search}%` } });
+      ops.push({ engagement_type: { [Op.like]: `%${search}%` } });
+      ops.push({ requirement_source: { [Op.like]: `%${search}%` } });
+    }
+    if (ops.length > 0) {
+      where[Op.or] = ops;
+    }
+    const { count, rows } = await Job.findAndCountAll({
+      where,
+      offset,
+      limit: pageLimit,
+      order: [["job_id", "DESC"]],
+      attributes: ["job_id", "job_title", "client_id", "skills", "job_type", "openings", "location", "exp_range", "budget_type", "engagement_type", "requirement_source", "received_date", "deadline", "created_at", "updated_at"],
+    });
+    const totalPages = Math.ceil(count / pageLimit) || 1;
+    return res.status(200).json({
+      success: true,
+      message: "Client jobs fetched successfully",
+      data: {
+        total: count,
+        currentPage,
+        totalPages,
+        jobs: rows,
+      },
+    });
+  } catch (e) {
+    return res.status(500).json({ success: false, message: e && e.message ? e.message : "Server error", data: {} });
+  }
+}
+
+module.exports = { createJob, updateJob, deleteJob, getJobById, getJobsList, getJobsByClient };

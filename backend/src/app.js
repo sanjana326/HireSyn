@@ -6,6 +6,7 @@ const authRoutes = require("./routes/auth.routes");
 const vendorRoutes = require("./routes/vendor.routes");
 const clientRoutes = require("./routes/client.routes");
 const clientContactsRoutes = require("./routes/client.contacts.routes");
+const clientJobsRoutes = require("./routes/client.jobs.routes");
 const jobRoutes = require("./routes/job.routes");
 const resourceRoutes = require("./routes/resource.routes");
 
@@ -30,6 +31,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/vendors", vendorRoutes);
 app.use("/api/clients", clientRoutes);
 app.use("/api/clients/:clientId/contacts", clientContactsRoutes);
+app.use("/api/clients/:clientId/jobs", clientJobsRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/resources", resourceRoutes);
 
